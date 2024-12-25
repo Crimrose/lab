@@ -52,8 +52,8 @@ jobs:
             git fetch --all
             git checkout ${{ steps.get_tag.outputs.tag_name }}
             git pull origin ${{ steps.get_tag.outputs.tag_name }} || true
-            docker compose build
-            docker compose up -d
+            docker-compose build
+            docker-compose up -d --force-recreate
 
             # 6) Validate containers are running
             docker compose ps
