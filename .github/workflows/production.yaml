@@ -7,7 +7,7 @@ on:
 jobs:
   deploy:
     environment: production
-    name: Deploy to Remote Server for Prerelease
+    name: Deploy to Remote Server for Release
     runs-on: ubuntu-latest
 
     steps:
