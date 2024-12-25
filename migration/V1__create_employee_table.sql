@@ -1,5 +1,4 @@
 -- V1__create_employee_table.sql
-
 DROP TABLE IF EXISTS employee;
 
 CREATE TABLE employee (
