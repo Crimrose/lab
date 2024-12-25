@@ -22,7 +22,7 @@ jobs:
           echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
 
       - name: SSH to Remote VM and Deploy
-        uses: appleboy/ssh-action@v0.1.17
+        uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.REMOTE_HOST }}             # e.g. '123.45.67.89'
           username: ${{ secrets.REMOTE_USER }}         # e.g. 'ubuntu'
