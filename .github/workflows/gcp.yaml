@@ -18,12 +18,12 @@ jobs:
     - name: Install SSH key
       run: |
         mkdir -p ~/.ssh
-        echo "${{secrets.GCP_SSH_PRIVATE_KEY}}" > ~/.ssh/id_rsa
+        echo "${{secrets.GCP_SSH_PRIVATE_KEY}}" > ~/.ssh/google_compute_engine
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan -t rsa  ${{secrets.GCP_REMOTE_HOST}} >> ~/.ssh/known_hosts
     - name: Deploy to Google Cloud VM
       run: |
-        ssh -i ~/.ssh/id_rsa ${{secrets.GCP_REMOTE_USER}}@${{secrets.GCP_REMOTE_HOST}} '
+        ssh -i ~/.ssh/google_compute_engine kientrantrung96_gmail_com@34.126.80.103 '
           ls -la
         '
 
