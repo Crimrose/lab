@@ -26,9 +26,8 @@ jobs:
 
     - name: Deploy to Google Cloud VM
       run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_REMOTE_USER }}@${{ secrets.GCP_REMOTE_HOST }} << 'EOF'
-        ls -lah
-        EOF
+        ls -la /home/runner/.ssh
+        ssh -T ${{ secrets.GCP_REMOTE_USER }}@${{ secrets.GCP_REMOTE_HOST }} 'ls -l'
 
     # - id: 'auth'
     #   uses: 'google-github-actions/auth@v2'
