@@ -27,6 +27,10 @@ jobs:
     - name: Deploy to Google Cloud VM
       run: |
         ls -la /home/runner/.ssh
+
+    - name: Deploy to Google Cloud VM
+      run: |
+        ls -la /home/runner/.ssh
         ssh -T ${{ secrets.GCP_REMOTE_USER }}@${{ secrets.GCP_REMOTE_HOST }} 'ls -l'
 
     # - id: 'auth'
