@@ -13,19 +13,16 @@ jobs:
       id-token: 'write'
 
     steps:
-    - uses: 'actions/checkout@v4'
+    # - uses: 'actions/checkout@v4'
 
-    - name: Install SSH key
-      run: |
-        mkdir -p ~/.ssh
-        echo "${{secrets.GCP_SSH_PRIVATE_KEY}}" > ~/.ssh/google_compute_engine
-        chmod 600 ~/.ssh/google_compute_engine
-        ssh-keyscan -t rsa  ${{secrets.GCP_REMOTE_HOST}} >> ~/.ssh/known_hosts
-    - name: Deploy to Google Cloud VM
-      run: |
-        ssh -i ~/.ssh/google_compute_engine kientrantrung96_gmail_com@34.126.80.103 'ls -la'
-
-
+    - name: executing remote ssh commands using password
+      uses: appleboy/ssh-action@v1.2.0
+      with:
+        host: ${{ secrets.GCP_REMOTE_HOST }}
+        username: githubci
+        password: ${{ secrets.GCP_PASSWORD }}
+        port: 22
+        script: whoami
     # - id: 'auth'
     #   uses: 'google-github-actions/auth@v2'
     #   with:
