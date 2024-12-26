@@ -15,23 +15,29 @@ jobs:
     steps:
     - uses: 'actions/checkout@v4'
 
-    - id: 'auth'
-      uses: 'google-github-actions/auth@v2'
-      with:
-        workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
-        service_account: ${{ secrets.SERVICE_ACCOUNT }}
-        project_id: redex-website-431108
+      - name: Install SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{secrets.GCP_SSH_PRIVATE_KEY}}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -t rsa  ${{secrets.GCP_REMOTE_HOST}} >> ~/.ssh/known_hosts
+      - name: Deploy to Google Cloud VM
+        run: |
+          ssh -i ~/.ssh/id_rsa ${{secrets.GCP_REMOTE_USER}}@${{secrets.GCP_REMOTE_HOST}} '
+            ls -la
+          '
 
-    - id: 'compute-ssh'
-      uses: 'google-github-actions/ssh-compute@v1'
-      with:
-        instance_name: 'redexwebsiteuat'
-        zone: 'asia-southeast1-a'
-        ssh_private_key: '${{ secrets.GCP_SSH_PRIVATE_KEY }}'
-        command: 'echo Hello world'
+    # - id: 'auth'
+    #   uses: 'google-github-actions/auth@v2'
+    #   with:
+    #     workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+    #     service_account: ${{ secrets.SERVICE_ACCOUNT }}
+    #     project_id: redex-website-431108
 
-    # Example of using the output
-    - id: 'test'
-      run: |-
-        echo '${{ steps.compute-ssh.outputs.stdout }}'
-        echo '${{ steps.compute-ssh.outputs.stderr }}'
+    # - id: 'compute-ssh'
+    #   uses: 'google-github-actions/ssh-compute@v1'
+    #   with:
+    #     instance_name: 'redexwebsiteuat'
+    #     zone: 'asia-southeast1-a'
+    #     ssh_private_key: '${{ secrets.GCP_SSH_PRIVATE_KEY }}'
+    #     command: 'echo Hello world'
