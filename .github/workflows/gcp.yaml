@@ -15,23 +15,38 @@ jobs:
     steps:
     - uses: 'actions/checkout@v4'
 
-    - id: 'auth'
-      uses: 'google-github-actions/auth@v2'
-      with:
-        workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
-        service_account: ${{ secrets.SERVICE_ACCOUNT }}
-        project_id: redex-website-431108
+    - name: Install SSH client
+      run: sudo apt-get install -y openssh-client
 
-    - id: 'compute-ssh'
-      uses: 'google-github-actions/ssh-compute@v1'
+    - name: Add SSH key
+      uses: shimataro/ssh-key-action@v2
       with:
-        instance_name: 'redexwebsiteuat'
-        zone: 'asia-southeast1-a'
-        ssh_private_key: '${{ secrets.GCP_SSH_PRIVATE_KEY }}'
-        command: 'echo Hello world'
+        key: ${{ secrets.GCP_SSH_PRIVATE_KEY }}
+        known_hosts: ${{ secrets.GCP_REMOTE_HOST }}
 
-    # Example of using the output
-    - id: 'test'
-      run: |-
-        echo '${{ steps.compute-ssh.outputs.stdout }}'
-        echo '${{ steps.compute-ssh.outputs.stderr }}'
+    - name: Deploy to Google Cloud VM
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_REMOTE_USER }}@${{ secrets.GCP_REMOTE_HOST }} << 'EOF'
+        ls -lah
+        EOF
+
+    # - id: 'auth'
+    #   uses: 'google-github-actions/auth@v2'
+    #   with:
+    #     workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+    #     service_account: ${{ secrets.SERVICE_ACCOUNT }}
+    #     project_id: redex-website-431108
+
+    # - id: 'compute-ssh'
+    #   uses: 'google-github-actions/ssh-compute@v1'
+    #   with:
+    #     instance_name: 'redexwebsiteuat'
+    #     zone: 'asia-southeast1-a'
+    #     ssh_private_key: '${{ secrets.GCP_SSH_PRIVATE_KEY }}'
+    #     command: 'echo Hello world'
+
+    # # Example of using the output
+    # - id: 'test'
+    #   run: |-
+    #     echo '${{ steps.compute-ssh.outputs.stdout }}'
+    #     echo '${{ steps.compute-ssh.outputs.stderr }}'
