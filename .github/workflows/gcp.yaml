@@ -23,9 +23,8 @@ jobs:
         ssh-keyscan -t rsa  ${{secrets.GCP_REMOTE_HOST}} >> ~/.ssh/known_hosts
     - name: Deploy to Google Cloud VM
       run: |
-        ssh -i ~/.ssh/google_compute_engine kientrantrung96_gmail_com@34.126.80.103 '
-          ls -la
-        '
+        ssh -i ~/.ssh/google_compute_engine kientrantrung96_gmail_com@34.126.80.103 'ls -la'
+
 
     # - id: 'auth'
     #   uses: 'google-github-actions/auth@v2'
