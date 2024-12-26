@@ -15,38 +15,23 @@ jobs:
     steps:
     - uses: 'actions/checkout@v4'
 
-    - name: Install SSH client
-      run: sudo apt-get install -y openssh-client
-
-    - name: Add SSH key
-      uses: shimataro/ssh-key-action@v2
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v2'
       with:
-        key: ${{ secrets.GCP_SSH_PRIVATE_KEY }}
-        known_hosts: ${{ secrets.GCP_REMOTE_HOST }}
+        workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+        service_account: ${{ secrets.SERVICE_ACCOUNT }}
+        project_id: redex-website-431108
 
-    - name: Deploy to Google Cloud VM
-      run: |
-        ls -la /home/runner/.ssh/id_rsa
-        sudo chmod 400 /home/runner/.ssh/id_rsa
-        ssh -i /home/runner/.ssh/id_rsa -o StrictHostKeyChecking=no -T ${{ secrets.GCP_REMOTE_USER }}@${{ secrets.GCP_REMOTE_HOST }} 'ls -l'
+    - id: 'compute-ssh'
+      uses: 'google-github-actions/ssh-compute@v1'
+      with:
+        instance_name: 'redexwebsiteuat'
+        zone: 'asia-southeast1-a'
+        ssh_private_key: '${{ secrets.GCP_SSH_PRIVATE_KEY }}'
+        command: 'echo Hello world'
 
-    # - id: 'auth'
-    #   uses: 'google-github-actions/auth@v2'
-    #   with:
-    #     workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
-    #     service_account: ${{ secrets.SERVICE_ACCOUNT }}
-    #     project_id: redex-website-431108
-
-    # - id: 'compute-ssh'
-    #   uses: 'google-github-actions/ssh-compute@v1'
-    #   with:
-    #     instance_name: 'redexwebsiteuat'
-    #     zone: 'asia-southeast1-a'
-    #     ssh_private_key: '${{ secrets.GCP_SSH_PRIVATE_KEY }}'
-    #     command: 'echo Hello world'
-
-    # # Example of using the output
-    # - id: 'test'
-    #   run: |-
-    #     echo '${{ steps.compute-ssh.outputs.stdout }}'
-    #     echo '${{ steps.compute-ssh.outputs.stderr }}'
+    # Example of using the output
+    - id: 'test'
+      run: |-
+        echo '${{ steps.compute-ssh.outputs.stdout }}'
+        echo '${{ steps.compute-ssh.outputs.stderr }}'
