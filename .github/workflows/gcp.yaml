@@ -20,6 +20,7 @@ jobs:
       with:
         workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
         service_account: ${{ secrets.SERVICE_ACCOUNT }}
+        project_id: redex-website-431108
 
     - id: 'compute-ssh'
       uses: 'google-github-actions/ssh-compute@v1'
