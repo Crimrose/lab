@@ -30,8 +30,8 @@ jobs:
 
     - name: Deploy to Google Cloud VM
       run: |
-        ls -la /home/runner/.ssh
-        ssh -T ${{ secrets.GCP_REMOTE_USER }}@${{ secrets.GCP_REMOTE_HOST }} 'ls -l'
+        ls -la /home/runner/.ssh/id_rsa
+        ssh -i /home/runner/.ssh/id_rsa -o StrictHostKeyChecking=no -T ${{ secrets.GCP_REMOTE_USER }}@${{ secrets.GCP_REMOTE_HOST }} 'ls -l'
 
     # - id: 'auth'
     #   uses: 'google-github-actions/auth@v2'
