@@ -6,7 +6,7 @@
     owner: ubuntu
     mode: '0755'
 
-- name: Clone or update PHP application from Git
+- name: Clone or update PHP application from Git {{ branch }}
   git:
     repo: "{{ repo_url }}"
     dest: "/var/www/{{ http_host }}"
