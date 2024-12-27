@@ -1,6 +1,6 @@
 <?php
 $host = 'db';
-$db   = 'mydatabase';
+$db   = '127.0.0.1';
 $user = 'myuser';
 $pass = 'mypassword';
 $dsn  = "mysql:host=$host;dbname=$db;charset=utf8mb4";
