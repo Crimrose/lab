@@ -1,11 +1,8 @@
 name: Deploy preprod
 
 on:
-  # release:
-  #   types: [prereleased]
-  push:
-    branches:
-      - main
+  release:
+    types: [prereleased]
 
 jobs:
   deploy:
@@ -38,11 +35,6 @@ jobs:
 
       - name: "Print Ansible version"
         run: ansible-playbook --version
-
-      # - name: Install Ansible
-      #   run: |
-      #     sudo apt-get update
-      #     sudo apt-get install -y ansible
 
       - name: Deploy playbook
         run: |
