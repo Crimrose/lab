@@ -1,8 +1,11 @@
 name: Deploy preprod
 
 on:
-  release:
-    types: [prereleased]
+  # release:
+  #   types: [prereleased]
+  push:
+    branches:
+      - main
 
 jobs:
   deploy:
@@ -11,6 +14,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: 'actions/checkout@v4'
+
+      - name: Set up SSH key
+        run: |
+          # Create .ssh folder
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/KienTran.pem
+          chmod 600 ~/.ssh/KienTran.pem
+
       - name: Get Release Tag
         # This step extracts the release tag (e.g. v1.2.3-rc) from the GitHub event payload
         id: get_tag
@@ -19,37 +31,23 @@ jobs:
           TAG_NAME="${GITHUB_REF##*/}"
           echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
 
-      - name: SSH to Remote VM and Deploy
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.REMOTE_HOST }}             # e.g. '123.45.67.89'
-          username: ${{ secrets.REMOTE_USER }}         # e.g. 'ubuntu'
-          key: ${{ secrets.SSH_PRIVATE_KEY }}           # Your private key stored in GitHub Secrets
-          port: 22                                     # Adjust if needed
-          script: |
-            FOLDER_NAME="lab"
-            echo "Deploying prerelease: ${{ steps.get_tag.outputs.tag_name }}"
+      - name: Install Ansible
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ansible
+
+      - name: Deploy playbook
+        run: |
+          export BRANCH=${{ steps.get_tag.outputs.tag_name }}
+          cd ansible-playbooks
+          ansible-playbook playbook.yml -i inventory.ini --private-key ~/.ssh/KienTran.pem --limit staging --tag=deploy
+      # - name: SSH to Remote VM and Deploy
+      #   uses: appleboy/ssh-action@master
+      #   with:
+      #     host: ${{ secrets.REMOTE_HOST }}             # e.g. '123.45.67.89'
+      #     username: ${{ secrets.REMOTE_USER }}         # e.g. 'ubuntu'
+      #     key: ${{ secrets.SSH_PRIVATE_KEY }}           # Your private key stored in GitHub Secrets
+      #     port: 22                                     # Adjust if needed
+      #     script: |
+      #       echo "Deploying prerelease: ${{ steps.get_tag.outputs.tag_name }}"
             
-            mkdir -p /tmp/redex
-
-            cd /tmp/redex
-
-            # Check if folder exists
-            if [ -d "$FOLDER_NAME" ]; then
-              echo "Folder '$FOLDER_NAME' already exists."
-              echo "Navigating to '$FOLDER_NAME'..."
-              cd "$FOLDER_NAME"
-            else
-              echo "Folder '$FOLDER_NAME' does NOT exist."
-              echo "Cloning repository:"
-              git clone https://github.com/Crimrose/lab.git "$FOLDER_NAME"
-              echo "Navigating to '$FOLDER_NAME'..."
-              cd "$FOLDER_NAME"
-            fi            
-            git fetch --all
-            git checkout ${{ steps.get_tag.outputs.tag_name }}
-            git pull origin ${{ steps.get_tag.outputs.tag_name }} || true
-            docker-compose build
-            docker-compose up -d --force-recreate
-            docker-compose ps
-            echo "Prerelease deployment completed successfully!"

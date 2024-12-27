@@ -15,6 +15,7 @@
         login_unix_socket: /var/run/mysqld/mysqld.sock
         check_implicit_admin: true
         state: present
+        ignore_errors: true
       when: mysql_root_password is defined
   rescue:
     - name: "If the above failed, by pass set Mysql root password"
