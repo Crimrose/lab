@@ -1,0 +1,4 @@
+---
+mysql_root_password: "mysql_root_password"
+mysql_backup_user: backupuser
+mysql_backup_user_password: 'ChangeMe_123'

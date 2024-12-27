@@ -1,0 +1,8 @@
+---
+apache_packages:
+  - apache2
+app_user: "ubuntu"
+http_host: "kien.com"
+http_conf: "kien.conf"
+http_port: "80"
+disable_default: true  

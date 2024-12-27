@@ -1,0 +1,24 @@
+---
+- name: Ensure Apache webroot directory exists
+  file:
+    path: "/var/www/{{ http_host }}"
+    state: directory
+    owner: ubuntu
+    mode: '0755'
+
+- name: Clone or update PHP application from Git
+  git:
+    repo: "{{ repo_url }}"
+    dest: "/var/www/{{ http_host }}"
+    version: "{{ branch }}"
+    force: yes
+    update: yes
+  become: true
+
+# - name: Set file permissions for webroot
+#   file:
+#     path: "{{ webroot }}"
+#     owner: ubuntu
+#     recurse: yes
+#     state: directory
+#     mode: '0755'

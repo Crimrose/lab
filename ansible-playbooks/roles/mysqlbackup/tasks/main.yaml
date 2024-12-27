@@ -1,0 +1,16 @@
+---
+- name: Copy MySQL backup script to server
+  template:
+    src: "backup_mysql.sh.j2"
+    dest: "{{ mysql_backup_script_path }}"
+    mode: '0755'
+
+- name: Create cron job for daily MySQL backup
+  ansible.builtin.cron:
+    name: "Daily MySQL backup"
+    user: root
+    # Runs at 00:00 (midnight) every day
+    hour: "0"
+    minute: "0"
+    job: "{{ mysql_backup_script_path }}"
+    cron_file: ansible_mysql_backup

@@ -1,0 +1,5 @@
+mysql_backup_user: "backupuser"
+mysql_backup_password: "ChangeMe_123"
+mysql_backup_database: "mydatabase"
+mysql_backup_dir: "/tmp/backup"  # or your preferred backup directory
+mysql_backup_script_path: "/usr/local/bin/mysql_backup.sh"

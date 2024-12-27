@@ -1,0 +1,6 @@
+[staging]
+redexwebsiteuat ansible_host=34.126.80.103
+
+[prod]
+redexwebsiteprod ansible_host=34.28.170.122
+

@@ -1,0 +1,21 @@
+---
+- name: Install PHP and extensions
+  apt:
+    name: "{{ php_packages }}"
+    state: present
+    update_cache: yes
+  notify:
+    - restart apache  # We can notify Apache to restart if needed so that PHP modules are loaded
+
+# UFW Configuration
+- name: "UFW - Allow HTTP on port {{ http_port }}"
+  ufw:
+    rule: allow
+    port: "{{ http_port }}"
+    proto: tcp
+
+# PHP Info Page
+- name: Sets Up PHP Info Page
+  template:
+    src: "files/info.php.j2"
+    dest: "/var/www/{{ http_host }}/index.php"

@@ -1,0 +1,47 @@
+---
+- name: Install MySQL Server
+  apt:
+    name: mysql-server
+    state: present
+    update_cache: yes
+
+- name: "Set MySQL root password"
+  block:
+    - name: "Try setting MySQL root password via Unix socket (no existing password)"
+      mysql_user:
+        name: root
+        password: "{{ mysql_root_password }}"
+        host: localhost
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+        check_implicit_admin: true
+        state: present
+      when: mysql_root_password is defined
+  rescue:
+    - name: "If the above failed, by pass set Mysql root password"
+      debug:
+        msg: "MySQL root password task finished."
+
+- name: "Create MySQL backup user"
+  mysql_user:
+    name: "{{ mysql_backup_user }}"
+    password: "{{ mysql_backup_user_password }}"
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    host: "%"
+    state: present
+    priv: "*.*:SELECT,LOCK TABLES,SHOW VIEW,RELOAD"
+
+- name: Removes all anonymous user accounts
+  mysql_user:
+    name: ''
+    host_all: yes
+    state: absent
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+
+- name: Removes the MySQL test database
+  mysql_db:
+    name: test
+    state: absent
+    login_user: root
+    login_password: "{{ mysql_root_password }}"  

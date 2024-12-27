@@ -1,0 +1,4 @@
+---
+repo_url: "https://github.com/capbash/samplephp"
+http_host: "kien.com"
+branch: "{{ lookup('env', 'BRANCH') | default('main', true) }}"
