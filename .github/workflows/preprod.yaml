@@ -6,7 +6,7 @@ on:
 
 jobs:
   deploy:
-    environment: preprod
+    # environment: preprod
     name: Deploy to Remote Server for Prerelease
     runs-on: ubuntu-latest
 
