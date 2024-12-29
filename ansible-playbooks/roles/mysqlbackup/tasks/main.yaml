@@ -1,4 +1,11 @@
 ---
+- name: Ensure Apache webroot directory exists
+  file:
+    path: "/home/backup"
+    state: directory
+    owner: "{{ app_user }}"
+    mode: '0755'
+
 - name: Copy MySQL backup script to server
   template:
     src: "backup_mysql.sh.j2"

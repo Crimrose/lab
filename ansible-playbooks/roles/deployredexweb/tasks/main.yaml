@@ -14,11 +14,3 @@
     force: yes
     update: yes
   become: true
-
-# - name: Set file permissions for webroot
-#   file:
-#     path: "{{ webroot }}"
-#     owner: ubuntu
-#     recurse: yes
-#     state: directory
-#     mode: '0755'

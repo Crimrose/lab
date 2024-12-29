@@ -5,7 +5,7 @@
 USER="myuser"
 PASSWORD="mypassword"
 DATABASE="mydatabase"
-BACKUP_DIR="/tmp/backup" # Change this to your desired backup directory
+BACKUP_DIR="/home/backup" # Change this to your desired backup directory
 DATE=$(date +"%Y%m%d%H%M%S")
 BACKUP_FILE="${BACKUP_DIR}/${DATABASE}_backup_${DATE}.sql.gz"
 
