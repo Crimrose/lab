@@ -1,11 +1,8 @@
 name: Deploy preprod
 
 on:
-  push:
-    branches:
-      - main
-  # release:
-  #   types: [prereleased]
+  release:
+    types: [prereleased]
 
 jobs:
   deploy:
@@ -44,14 +41,3 @@ jobs:
           export BRANCH=${{ steps.get_tag.outputs.tag_name }}
           cd ansible-playbooks
           ansible-playbook playbook.yml -i inventory.ini --private-key ~/.ssh/google_compute_engine --limit staging --tag=deploy --extra-vars "ansible_user=$ANSIBLE_USER ansible_sudo_pass=$ANSIBLE_PASS ansible_ssh_pass=$ANSIBLE_PASS"
-
-      # - name: SSH to Remote VM and Deploy
-      #   uses: appleboy/ssh-action@master
-      #   with:
-      #     host: ${{ secrets.REMOTE_HOST }}             # e.g. '123.45.67.89'
-      #     username: ${{ secrets.REMOTE_USER }}         # e.g. 'ubuntu'
-      #     key: ${{ secrets.SSH_PRIVATE_KEY }}           # Your private key stored in GitHub Secrets
-      #     port: 22                                     # Adjust if needed
-      #     script: |
-      #       echo "Deploying prerelease: ${{ steps.get_tag.outputs.tag_name }}"
-            
