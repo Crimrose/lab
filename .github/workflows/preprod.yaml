@@ -1,8 +1,11 @@
 name: Deploy preprod
 
 on:
-  release:
-    types: [prereleased]
+  push:
+    branches:
+      - main
+  # release:
+  #   types: [prereleased]
 
 jobs:
   deploy:
@@ -40,7 +43,7 @@ jobs:
         run: |
           export BRANCH=${{ steps.get_tag.outputs.tag_name }}
           cd ansible-playbooks
-          ansible-playbook playbook.yml -i inventory.ini --private-key ~/.ssh/google_compute_engine --limit staging --tag=deploy --extra-vars "ansible_user=$ANSIBLE_USER ansible_sudo_pass=$ANSIBLE_PASS"
+          ansible-playbook playbook.yml -i inventory.ini --private-key ~/.ssh/google_compute_engine --limit staging --tag=deploy --extra-vars "ansible_user=$ANSIBLE_USER ansible_sudo_pass=$ANSIBLE_PASS ansible_ssh_pass=$ANSIBLE_PASS"
 
       # - name: SSH to Remote VM and Deploy
       #   uses: appleboy/ssh-action@master
