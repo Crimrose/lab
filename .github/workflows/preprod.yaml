@@ -6,19 +6,12 @@ on:
 
 jobs:
   deploy:
-    # environment: preprod
+    environment: preprod
     name: Deploy to Remote Server for Prerelease
     runs-on: ubuntu-latest
 
     steps:
       - uses: 'actions/checkout@v4'
-
-      - name: Set up SSH key
-        run: |
-          # Create .ssh folder
-          mkdir -p ~/.ssh
-          echo "${{ secrets.GCP_SSH_PRIVATE_KEY }}" > ~/.ssh/google_compute_engine
-          chmod 600 ~/.ssh/google_compute_engine
 
       - name: Get Release Tag
         # This step extracts the release tag (e.g. v1.2.3-rc) from the GitHub event payload
@@ -40,4 +33,4 @@ jobs:
         run: |
           export BRANCH=${{ steps.get_tag.outputs.tag_name }}
           cd ansible-playbooks
-          ansible-playbook playbook.yml -i inventory.ini --private-key ~/.ssh/google_compute_engine --limit staging --tag=deploy --extra-vars "ansible_user=$ANSIBLE_USER ansible_sudo_pass=$ANSIBLE_PASS ansible_ssh_pass=$ANSIBLE_PASS"
+          ansible-playbook playbook.yml -i inventory.ini --limit staging --tag=deploy --extra-vars "ansible_user=$ANSIBLE_USER ansible_sudo_pass=$ANSIBLE_PASS ansible_ssh_pass=$ANSIBLE_PASS"
