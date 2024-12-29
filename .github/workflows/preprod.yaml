@@ -17,7 +17,7 @@ jobs:
         run: |
           # Create .ssh folder
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/KienTran.pem
+          echo "${{ secrets.GCP_SSH_PRIVATE_KEY }}" > ~/.ssh/google_compute_engine
           chmod 600 ~/.ssh/google_compute_engine
 
       - name: Get Release Tag
