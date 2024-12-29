@@ -7,7 +7,7 @@ $dsn  = "mysql:host=$host;dbname=$db;charset=utf8mb4";
 
 try {
     $pdo = new PDO($dsn, $user, $pass);
-    echo "Connected to MySQL successfully! With version 1.1";
+    echo "Connected to MySQL successfully! With version 0.1.1";
 } catch (PDOException $e) {
     echo "Connection failed: " . $e->getMessage();
 }
