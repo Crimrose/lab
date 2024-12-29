@@ -1,7 +1,7 @@
 ---
 apache_packages:
   - apache2
-app_user: "ubuntu"
+app_user: "kientrantrung96_gmail_com"
 http_host: "kien.com"
 http_conf: "kien.conf"
 http_port: "80"

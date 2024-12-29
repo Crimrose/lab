@@ -3,7 +3,7 @@
   file:
     path: "/var/www/{{ http_host }}"
     state: directory
-    owner: ubuntu
+    owner: "{{ app_user }}"
     mode: '0755'
 
 - name: Clone or update PHP application from Git {{ branch }}
