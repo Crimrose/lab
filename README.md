@@ -2,12 +2,17 @@
 
 ## Description
 
-Setup 
+a lab environment using Ansible to automate the setup and configuration of a LAMP stack (Linux, Apache, MySQL, PHP). This setup ensures that the environment is consistent and reproducible across different stages such as development, staging, and production.
 
 ## Stack
-apache2
-mysql - 8.0.40
-php 8.3.6
+
+* apache
+
+* mysql - 8.0.40
+
+* php 8.3.6
+
+* Ubuntu 24.04
 
 ### Pre-requisites
 You must have [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#pipx-install).
@@ -69,6 +74,17 @@ ansible-playbooks/
 `playbook.yml`: the playbook file.
 
 ## How to use
+
+Add ssh key on local `ansible_ssh_private_key_file=~/.ssh/google_compute_engine`.
+
+Update variables in `ansible-playbooks/group_vars`
+
+`all.yaml`: All env
+
+`prod.yaml`: Production env
+
+`staging.yaml` Staging env
+
 Apply entire playbooks
 
 ```
@@ -76,19 +92,11 @@ cd ansible-playbooks
 ansible-playbook playbook.yml -i inventory.ini --limit staging
 ```
 
-Apply one tags
+Apply deploy web:
 ```
 ansible-playbook playbook.yml -i inventory.ini --limit staging --tags=deploy
 ```
 
-## Flyway migration
+## How to release app from GH actions
 
-```
-flyway migrate
-```
-
-## Backup
-
-```
-./scripts/backup.sh
-```
+Create feature branch -> main -> prereleased (staging) -> released (prod)
