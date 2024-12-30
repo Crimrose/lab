@@ -8,7 +8,7 @@
 <body>
     <h1>
         <?php
-            $host = 'db';
+            $host = 'localhost';
             $db   = 'mydatabase';
             $user = 'root';
             $pass = 'mysql_root_password';
