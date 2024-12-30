@@ -100,3 +100,11 @@ ansible-playbook playbook.yml -i inventory.ini --limit staging --tags=deploy
 ## How to release app from GH actions
 
 Create feature branch -> main -> prereleased (staging) -> released (prod)
+
+## Expected results
+
+Connect web via IP: http://34.126.80.103/
+
+Output:
+
+`Connected to MySQL successfully! With version 0.1.2`
