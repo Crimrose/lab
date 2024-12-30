@@ -1,16 +1,40 @@
 ---
 - name: Ensure Apache webroot directory exists
   file:
-    path: "/var/www/{{ http_host }}"
+    path: "/var/www/redex"
     state: directory
     owner: "{{ app_user }}"
     mode: '0755'
 
-- name: Clone or update PHP application from Git {{ branch }}
-  git:
+- name: Add the directory to Git's safe.directory list
+  ansible.builtin.command:
+    cmd: git config --global --add safe.directory /var/www/redex
+  become: yes  # Use this if Ansible needs elevated permissions to configure Git
+
+
+- name: Ensure the repository is cloned
+  ansible.builtin.git:
     repo: "{{ repo_url }}"
-    dest: "/var/www/{{ http_host }}"
-    version: "{{ branch }}"
-    force: yes
+    dest: "/var/www/redex"
+    version: main
     update: yes
-  become: true
+  register: git_result
+  ignore_errors: yes
+
+- name: Debug output for git task
+  debug:
+    var: git_result
+
+- name: Fix potential repository issues
+  block:
+    - name: Remove broken repository directory
+      ansible.builtin.file:
+        path: "/var/www/redex"
+        state: absent
+
+    - name: Re-clone the repository
+      ansible.builtin.git:
+        repo: "{{ repo_url }}"
+        dest: "/var/www/redex"
+        version: "{{ branch }}"
+  when: git_result.failed

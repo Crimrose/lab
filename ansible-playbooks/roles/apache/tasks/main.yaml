@@ -9,7 +9,7 @@
 
 - name: Create document root
   file:
-    path: "/var/www/{{ http_host }}"
+    path: "/var/www/redex"
     state: directory
     owner: "{{ app_user }}"
     mode: '0755'
