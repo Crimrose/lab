@@ -16,7 +16,7 @@
 
             try {
                 $pdo = new PDO($dsn, $user, $pass);
-                echo "Connected to MySQL successfully!";
+                echo "Connected to MySQL successfully! Echo v0.1.6";
             } catch (PDOException $e) {
                 echo "Connection failed: " . $e->getMessage();
             }
