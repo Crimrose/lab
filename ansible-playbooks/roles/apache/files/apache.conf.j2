@@ -6,7 +6,11 @@
     CustomLog ${APACHE_LOG_DIR}/access.log combined
 
     <Directory /var/www/redex>
-          Options -Indexes
+        Options -Indexes
+        {{ "Require all denied" }}
+        {% for ip in whitelist_ips %}
+        Require ip {{ ip }}
+        {% endfor %}
     </Directory>
 
     <IfModule mod_dir.c>

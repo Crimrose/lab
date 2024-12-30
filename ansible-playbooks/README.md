@@ -33,3 +33,5 @@ Deploy website
 `mysql_backup_password`: mysql backup password
 
 `mysql_backup_database`: mysql backup database
+
+`whitelist_ips`: Define list ips can access website
