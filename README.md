@@ -105,6 +105,13 @@ ansible-playbook playbook.yml -i inventory.ini --limit staging --tags=deploy
 
 Create feature branch -> main -> prereleased (staging) -> released (prod)
 
+* Release staging: From [releases page](https://github.com/Crimrose/lab/releases) click on `Draft a new release` button -> Put tag name e.g `v0.1.3` and `Set as a pre-release` -> Publish release. New pipeline will be triggered to deploy staging.
+
+![preprod](docs/preprod.png)
+
+* Release production: From [releases page](https://github.com/Crimrose/lab/releases) page, click on pre-release tag and check `Set as the latest release` to submit release to production.
+
+
 ## Expected results
 
 Connect web via IP: http://34.126.80.103/
