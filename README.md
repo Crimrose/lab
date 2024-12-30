@@ -2,7 +2,7 @@
 
 ## Description
 
-a lab environment using Ansible to automate the setup and configuration of a LAMP stack (Linux, Apache, MySQL, PHP). This setup ensures that the environment is consistent and reproducible across different stages such as development, staging, and production.
+A lab environment using Ansible to automate the setup and configuration of a LAMP stack (Linux, Apache, MySQL, PHP). This setup ensures that the environment is consistent and reproducible across different stages such as development, staging, and production.
 
 ## Stack
 
@@ -72,6 +72,10 @@ ansible-playbooks/
 `group_vars/`: directory to save variable files. A default.yml var file is included by default.
 
 `playbook.yml`: the playbook file.
+
+Feature: 
+
+* Setup apache, php, mysql, backup, deploy website with CI.
 
 ## How to use
 
